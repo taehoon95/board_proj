@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+#articleForm{
+	border-radius: 20px;
+	width: 500px;
+	height: 500px;
+	border: 1px solid #ccc;
+	margin: 50px auto;
+	text-align: center;
+}
+
+h2{
+	text-align: center;
+}
+
+#basicInfoArea{
+	height: 40px;
+	text-align: center;
+}
+
+#articleContentArea{
+	background: #80ff80;
+	margin-top: 20px;
+	height: 350px;
+	text-align: center;
+	overflow: auto;
+	border-radius: 10px;
+}
+
+#commandList{
+	margin: auto;
+	width: 500px;
+	text-align: center;
+}
+
+a{
+	text-decoration: none;
+	color: green;
+}
+
+a:hover{
+	color: brown;
+}
