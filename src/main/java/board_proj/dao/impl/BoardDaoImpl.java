@@ -192,4 +192,19 @@ public class BoardDaoImpl implements BoardDao {
 		return 1;
 	}
 
+	@Override
+	public int updateArticle(BoardDTO article) {
+		String sql = "update board "  
+					    +     " set BOARD_SUBJECT = ?, BOARD_CONTENT = ?  "  
+				        + " where BOARD_NUM = ?";
+		try(PreparedStatement pstmt = con.prepareStatement(sql)){
+			pstmt.setString(1, article.getBoard_subject());
+			pstmt.setString(2, article.getBoard_content());
+			pstmt.setInt(3, article.getBoard_num());
+			return pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

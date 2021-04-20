@@ -61,3 +61,15 @@ delete
   where BOARD_NUM = 36;
   
 select * from board where BOARD_NUM = 13 and board_pass = '23';
+
+-- 수정
+select BOARD_NUM,BOARD_NAME,BOARD_PASS,BOARD_SUBJECT,BOARD_CONTENT,BOARD_FILE   ,BOARD_RE_REF,BOARD_RE_LEV,BOARD_RE_SEQ,BOARD_READCOUNT,BOARD_DATE   from board ;
+
+update board 
+      set BOARD_SUBJECT = 'aaa', BOARD_CONTENT = 'aaa'
+ where BOARD_NUM = 22;
+
+
+
+
+

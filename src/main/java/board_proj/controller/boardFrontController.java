@@ -12,7 +12,7 @@ import board_proj.action.Action;
 import board_proj.action.BoardDeleteProAction;
 import board_proj.action.BoardDetailAction;
 import board_proj.action.BoardListAction;
-import board_proj.action.BoardModifyAction;
+import board_proj.action.BoardModifyProAction;
 import board_proj.action.BoardModifyFormAction;
 import board_proj.action.BoardReplyFormAction;
 import board_proj.action.BoardWriterProAction;
@@ -115,12 +115,12 @@ public class boardFrontController extends HttpServlet {
 		}else if(command.equals("/boardModifyForm.do")) {
 			action = new BoardModifyFormAction();
 			try {
-			forward = action.execute(request, response);
+				forward = action.execute(request, response);
 			} catch (Exception e) {
-			e.printStackTrace();
+				e.printStackTrace();
 			}
 		}else if(command.equals("/boardModify.do")) {
-			action = new BoardModifyAction();
+			action = new BoardModifyProAction();
 			try {
 			forward = action.execute(request, response);
 			} catch (Exception e) {

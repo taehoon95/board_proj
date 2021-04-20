@@ -123,8 +123,19 @@ public class BoardDaoImplTest {
 		System.out.println("res >> " + res);
 	}
 
+	 @Test
+		public void test08updateArticle() {
+			System.out.println("test08updateArticle");
+			int board_num = 22;
+			BoardDTO article = dao.selectArticle(board_num);
+			int res = dao.updateArticle(article);
+			Assert.assertEquals(1, res);
+			
+			System.out.println(article);
+		}
+	
 	@Test
-	public void test08DeleteArticle() {
+	public void test09DeleteArticle() {
 		System.out.println("testDeleteArticle");
 		int board_num = dao.nextBoardNum() - 1;
 

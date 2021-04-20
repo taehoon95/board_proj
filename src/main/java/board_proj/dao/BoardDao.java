@@ -26,4 +26,5 @@ public interface BoardDao {
 	
 	int nextBoardNum();
 
+	int updateArticle(BoardDTO article);
 }

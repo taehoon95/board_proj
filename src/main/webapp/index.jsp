@@ -5,11 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>MVC게시판</title>
+<link rel="stylesheet" href="/board_proj/css/btn.css">
 </head>
 <body>
-방가~~~~~~~~!!!<br>
-<%=JndiDs.getConnection() %>
-<a href="boardWriterForm.do">게시판 글쓰기</a>
+<%-- 방가~~~~~~~~!!!<br>
+<%=JndiDs.getConnection() %> --%>
+<div class="bluelight">
+	<a href="boardWriterForm.do">게시판 글쓰기</a>
+</div>
 </body>
 </html>
