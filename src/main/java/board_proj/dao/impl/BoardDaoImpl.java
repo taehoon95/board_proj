@@ -69,12 +69,17 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	private BoardDTO getBoardDTO(ResultSet rs) throws SQLException {
+		String board_file = null;
+		
 		int board_num = rs.getInt("BOARD_NUM");
 		String board_name = rs.getString("BOARD_NAME");
 		String board_pass = rs.getString("BOARD_PASS");
 		String board_subject = rs.getString("BOARD_SUBJECT");
 		String board_content = rs.getString("BOARD_CONTENT");
-		String board_file = rs.getNString("BOARD_FILE");
+		try {
+			board_file = rs.getNString("BOARD_FILE");
+		}catch (Exception e) {}
+		
 		int board_re_ref = rs.getInt("BOARD_RE_REF");
 		int board_re_lev = rs.getInt("BOARD_RE_LEV");
 		int board_re_seq = rs.getInt("BOARD_RE_SEQ");
@@ -126,13 +131,48 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public int insertReplyArticle(BoardDTO article) {
-		// TODO Auto-generated method stub
+		replyUpdate(article);
+		
+		String sql = "INSERT INTO web_gradle_erp.board\r\n" + 
+				"(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, BOARD_CONTENT, "
+				+ "BOARD_RE_REF, BOARD_RE_LEV, BOARD_RE_SEQ, BOARD_READCOUNT)\r\n" + 
+				"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+			int nextNum = nextBoardNum();
+			pstmt.setInt(1, nextNum);
+			pstmt.setString(2, article.getBoard_name());
+			pstmt.setString(3, article.getBoard_pass());
+			pstmt.setString(4, article.getBoard_subject());
+			pstmt.setString(5, article.getBoard_content());
+			pstmt.setInt(6, article.getBoard_re_ref());
+			pstmt.setInt(7, article.getBoard_re_lev()+1);
+			pstmt.setInt(8, article.getBoard_re_seq()+1);
+			pstmt.setInt(9, article.getBoard_re_readcount());
+
+			return pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return 0;
+	}
+
+	private void replyUpdate(BoardDTO article) {
+		String sql = "update board \r\n" + 
+				"	set BOARD_RE_SEQ = BOARD_RE_SEQ +1\r\n" + 
+				"	where BOARD_RE_REF =? and BOARD_RE_SEQ >?";
+		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, article.getBoard_re_ref());
+			pstmt.setInt(2, article.getBoard_re_seq());
+			pstmt.executeUpdate();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@Override
 	public int updateReplyArticle(BoardDTO article) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -69,7 +69,24 @@ update board
       set BOARD_SUBJECT = 'aaa', BOARD_CONTENT = 'aaa'
  where BOARD_NUM = 22;
 
+-- 답변
+INSERT INTO web_gradle_erp.board
+(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, BOARD_CONTENT, BOARD_FILE, BOARD_RE_REF)
+VALUES(5, '김상건', '1111', '마칠시간', '5시', 'test.txt', 5);
 
+select BOARD_READCOUNT
+  from board where BOARD_NUM = 1;	
 
+update board 
+	set BOARD_READCOUNT =BOARD_READCOUNT+1
+	where BOARD_NUM =1;
+			
+select 1 from board  where BOARD_NUM = 28 and BOARD_PASS ="1111";
 
-
+update board 
+	set BOARD_SUBJECT = '444' ,BOARD_CONTENT ='555'
+	where BOARD_NUM = 22;
+		
+update board 
+	set BOARD_RE_SEQ = BOARD_RE_SEQ +1
+	where BOARD_RE_REF =40 and BOARD_RE_SEQ >0;

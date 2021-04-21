@@ -14,16 +14,18 @@ public class BoardModifyProAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		response.setContentType("text/html;charset=utf-8");
+		
 		int board_num = Integer.parseInt(request.getParameter("board_num"));
+		String board_subject = request.getParameter("board_subject");
+		String board_content = request.getParameter("board_content");		
 		String pass = request.getParameter("board_pass");
 		int page = Integer.parseInt(request.getParameter("page"));
-		
 		
 		BoardModifyProService  service  = new BoardModifyProService ();
 		
 		ActionForward forward = null;
-
+		
 		boolean isArticleWriter = service.isArticleWriter(board_num, pass);
 		if(!isArticleWriter) {
 			sendMessage(response,"수정할 권한이 없습니다.");
@@ -31,9 +33,6 @@ public class BoardModifyProAction implements Action {
 		}
 		
 		BoardDTO article = new BoardDTO();
-		
-		String board_subject = request.getParameter("board_subject");
-		String board_content = request.getParameter("board_content");
 		
 		article.setBoard_num(board_num);
 		article.setBoard_subject(board_subject);
@@ -48,7 +47,6 @@ public class BoardModifyProAction implements Action {
 		forward = new ActionForward();
 		forward.setRedirect(true);
 		forward.setPath("boardDetail.do?board_num="+board_num+"&page=" + page);
-		System.out.println(forward.toString());
 		return forward;
 	}
 
