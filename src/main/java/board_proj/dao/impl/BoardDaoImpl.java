@@ -16,7 +16,7 @@ public class BoardDaoImpl implements BoardDao {
 
 	private BoardDaoImpl() {
 	}
-
+ 
 	public static BoardDaoImpl getInstance() {
 		return instance;
 	}
@@ -130,53 +130,6 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public int insertReplyArticle(BoardDTO article) {
-		replyUpdate(article);
-		
-		String sql = "INSERT INTO web_gradle_erp.board\r\n" + 
-				"(BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, BOARD_CONTENT, "
-				+ "BOARD_RE_REF, BOARD_RE_LEV, BOARD_RE_SEQ, BOARD_READCOUNT)\r\n" + 
-				"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-
-			int nextNum = nextBoardNum();
-			pstmt.setInt(1, nextNum);
-			pstmt.setString(2, article.getBoard_name());
-			pstmt.setString(3, article.getBoard_pass());
-			pstmt.setString(4, article.getBoard_subject());
-			pstmt.setString(5, article.getBoard_content());
-			pstmt.setInt(6, article.getBoard_re_ref());
-			pstmt.setInt(7, article.getBoard_re_lev()+1);
-			pstmt.setInt(8, article.getBoard_re_seq()+1);
-			pstmt.setInt(9, article.getBoard_re_readcount());
-
-			return pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	private void replyUpdate(BoardDTO article) {
-		String sql = "update board \r\n" + 
-				"	set BOARD_RE_SEQ = BOARD_RE_SEQ +1\r\n" + 
-				"	where BOARD_RE_REF =? and BOARD_RE_SEQ >?";
-		try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-			pstmt.setInt(1, article.getBoard_re_ref());
-			pstmt.setInt(2, article.getBoard_re_seq());
-			pstmt.executeUpdate();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	@Override
-	public int updateReplyArticle(BoardDTO article) {
-		return 0;
-	}
-
-	@Override
 	public int deleteArticle(int board_num) {
 		String sql = "delete " 
 						+ " from board " 
@@ -219,18 +172,6 @@ public class BoardDaoImpl implements BoardDao {
 		return false;
 	}
 
-	@Override
-	public int nextBoardNum() {
-		String sql = "select max(BOARD_NUM) from board";
-		try (PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-			if (rs.next()) {
-				return rs.getInt(1) + 1;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 1;
-	}
 
 	@Override
 	public int updateArticle(BoardDTO article) {
@@ -246,5 +187,84 @@ public class BoardDaoImpl implements BoardDao {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	@Override
+	public int insertReplyArticle(BoardDTO article) {
+		int next_board_num = nextBoardNum();
+		
+		int re_ref = article.getBoard_re_ref();
+		int re_lev = article.getBoard_re_lev();
+		int re_seq = article.getBoard_re_seq();
+		
+		String sql1 = "update board "  
+				  	  	   + "  set BOARD_RE_SEQ = BOARD_RE_SEQ +1 "  
+				       + " where BOARD_RE_REF =? "
+				       + "     and BOARD_RE_SEQ >?";
+		
+		String sql2 = "INSERT INTO web_gradle_erp.board "
+				+" (BOARD_NUM, BOARD_NAME, BOARD_PASS,"
+				+ " BOARD_SUBJECT, BOARD_CONTENT, BOARD_FILE,"
+				+ " BOARD_RE_REF,BOARD_RE_LEV,BOARD_RE_SEQ) "
+				+" VALUES(?, ?, ?, ?, ?, '', ?, ?, ?)";
+		
+		try {
+			con.setAutoCommit(false);
+			try(PreparedStatement pstmt = con.prepareStatement(sql1)){
+				pstmt.setInt(1, re_ref);
+				pstmt.setInt(2, re_seq);
+				
+				System.out.println(pstmt);
+				pstmt.executeUpdate();
+			} 
+			
+			re_seq++;
+			re_lev++;
+			
+			try(PreparedStatement pstmt = con.prepareStatement(sql2)){
+				pstmt.setInt(1, next_board_num);
+				pstmt.setString(2, article.getBoard_name());
+				pstmt.setString(3, article.getBoard_pass());
+				pstmt.setString(4, article.getBoard_subject());
+				pstmt.setString(5, article.getBoard_content());
+				pstmt.setInt(6, re_ref);
+				pstmt.setInt(7, re_lev);
+				pstmt.setInt(8, re_seq);
+				
+				System.out.println(pstmt);
+				pstmt.executeUpdate();
+			} 
+			
+			con.commit();
+			return 1;
+		}catch (Exception e) {
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return 0;
+	}
+	
+
+	@Override
+	public int nextBoardNum() {
+		String sql = "select max(BOARD_NUM) from board";
+		try (PreparedStatement pstmt = con.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+			if (rs.next()) {
+				return rs.getInt(1) + 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 1;
 	}
 }

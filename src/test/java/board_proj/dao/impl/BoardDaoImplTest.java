@@ -58,7 +58,17 @@ public class BoardDaoImplTest {
 
 		System.out.println("ListCount >> " + res);
 	}
+	
+	@Test
+	public void test02InsertArticle() {
+		System.out.println("testInsertArticle");
 
+		BoardDTO article = new BoardDTO("이태훈", "1111", "끝날시간", "4시", "test.txt");
+		int res = dao.insertArticle(article);
+		Assert.assertEquals(1, res);
+		System.out.println(article);
+	}
+	
 	@Test
 	public void test03SelectArticleList() {
 		System.out.println("testSelectArticleList");
@@ -73,37 +83,16 @@ public class BoardDaoImplTest {
 		dao.selectArticleList(2, 10).stream().forEach(System.out::println);
 	}
 
-	@Test
-	public void testSelectArticle() {
-		System.out.println("testSelectArticle");
-		int board_num = 4;
-		BoardDTO article = dao.selectArticle(board_num);
 
-		Assert.assertNotNull(article);
-		System.out.println(article);
-	}
 
-	// @Test
-	public void test02InsertArticle() {
-		System.out.println("testInsertArticle");
 
-		BoardDTO article = new BoardDTO("이태훈", "1111", "끝날시간", "4시", "test.txt");
-		int res = dao.insertArticle(article);
-		Assert.assertEquals(1, res);
-		System.out.println(article);
-	}
-
-	@Test
-	public void testInsertReplyArticle() {
-		fail("Not yet implemented");
-	}
-
+	
 	@Test
 	public void testUpdateReplyArticle() {
 		fail("Not yet implemented");
 	}
 
-	// @Test
+	@Test
 	public void test06updateReadCount() {
 		System.out.println("testupdateReadCount");
 		int board_num = 32;
@@ -143,6 +132,29 @@ public class BoardDaoImplTest {
 		Assert.assertEquals(1, res);
 		System.out.println("delete  " + res);
 
+	}
+
+	@Test
+	public void test10InsertReplyArticle() {
+		System.out.println("test10InsertReplyArticle");
+		BoardDTO article = new BoardDTO("김상건5", "1111", "앙데4", "절대로4", "");
+		
+		article.setBoard_re_ref(20);
+		
+		int res = dao.insertReplyArticle(article);
+		
+		Assert.assertNotEquals(1, res);
+		System.out.println("res >> " + res);
+	}
+
+	@Test
+	public void test11SelectArticle() {
+		System.out.println("testSelectArticle");
+		int board_num = 4;
+		BoardDTO article = dao.selectArticle(board_num);
+
+		Assert.assertNotNull(article);
+		System.out.println(article);
 	}
 
 }

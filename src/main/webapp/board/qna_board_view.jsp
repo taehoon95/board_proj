@@ -9,9 +9,13 @@
 <link rel="stylesheet" href="/board_proj/css/qna_board_view.css">
 </head>
 <body>
-	<%-- ${page }
+ ${page }
 <br>
-${article } --%>
+${article.board_re_ref }
+<br>
+lev: ${article.board_re_lev }
+<br>
+seq: ${article.board_re_seq }
 	<section id = "articleForm">
 	<h2>글 내용 상세보기</h2>
 		제목 : ${article.board_subject}<br><br> 첨부 파일 :

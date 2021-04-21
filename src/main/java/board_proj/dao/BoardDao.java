@@ -16,8 +16,6 @@ public interface BoardDao {
 
 	int insertReplyArticle(BoardDTO article);
 
-	int updateReplyArticle(BoardDTO article);
-
 	int deleteArticle(int board_num);
 
 	int updateReadCount(int board_num);

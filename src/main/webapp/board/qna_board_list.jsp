@@ -12,7 +12,10 @@
 </head>
 <body>
 	<h2>게시판 목록</h2>
+	
 	<section id = "list">
+	<div class = "container">
+		<h3><a href="boardWriteForm.do">게시판 글쓰기</a></h3>
 		<table class="tbl_type">
 			<tr id=title>
 				<td>번호</td>
@@ -25,10 +28,16 @@
 			<c:forEach var="board" items="${articleList }">
 				<tr>
 					<td>${board.board_num}</td>
-					<td>
-						<a href="boardDetail.do?board_num=${board.board_num}&page=${pageInfo.page}">
-							${board.board_subject}
-						</a>
+					<td id="subject">
+	 					<c:if test="${board.board_re_lev ne 0}">
+	 						<c:forEach var="i" begin="1" end="${board.board_re_lev*2}">
+	 							&nbsp;
+	 						</c:forEach>
+	 						&#8618;
+	 					</c:if>
+	 						<a href="boardDetail.do?board_num=${board.board_num}&page=${pageInfo.page}">
+								${board.board_subject}
+							</a>
 					</td>
 					<td>${board.board_name}</td>
 					<td>${board.board_date}</td>
@@ -36,6 +45,7 @@
 				</tr>
 			</c:forEach>
 		</table>
+		</div>
 	</section>
 <%-- ${pageInfo} --%>
 	<section class="pageInfo">

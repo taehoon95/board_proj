@@ -1,47 +1,35 @@
 package board_proj.action;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import board_proj.dto.ActionForward;
 import board_proj.dto.BoardDTO;
-import board_proj.service.BoardReplyService;
+import board_proj.service.BoardReplyProService;
 
 public class BoardReplyProAction implements Action {
-
+ 
 	@Override
-	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("text/html;charset=UTF-8");
+		
 		ActionForward forward = null;
-		BoardReplyService service = new BoardReplyService();
+		
+		int page = Integer.parseInt(request.getParameter("page"));
+		BoardReplyProService service = new BoardReplyProService();
 		
 		BoardDTO boardDto = getArticle(request);
+		boolean res = service.replyArticle(boardDto);
 		
-		if(!service.insertReplyArticle(boardDto)) {
-			getMessge(response,"답변등록실패");
-			return forward;
+		if(res) {
+			forward = new ActionForward("boardList.do?page="+page, true);
+		}else {
+			SendMessage.sendMessage(response,"답변등록실패");
 		}
-		
-		
-		String page = request.getParameter("page");
-		forward = new ActionForward();
-		forward.setRedirect(true);
-		forward.setPath("boardList.do?page="+page);
 
 		return forward;
 	}
 	
-	private void getMessge(HttpServletResponse response,String str) throws IOException {
-		PrintWriter out = response.getWriter();
-		out.write("<script>");
-		out.write("alert('"+str+"');");
-		out.write("history.back();");
-		out.write("</script>");
-	}
-
 	private BoardDTO getArticle(HttpServletRequest request) {
 		int board_num = Integer.parseInt(request.getParameter("board_num"));
 		String board_name = request.getParameter("board_name");

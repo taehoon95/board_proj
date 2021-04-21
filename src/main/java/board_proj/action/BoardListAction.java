@@ -11,9 +11,9 @@ import board_proj.dto.PageInfo;
 import board_proj.service.BoardListService;
 
 public class BoardListAction implements Action {
-
+ 
 	@Override
-	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response){
 		int page = 1;
 		int limit = 10;
 		

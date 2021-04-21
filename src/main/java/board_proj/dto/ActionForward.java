@@ -11,7 +11,7 @@ public class ActionForward {
 
 	public ActionForward() {
 	}
-
+ 
 	public String getPath() {
 		return path;
 	}

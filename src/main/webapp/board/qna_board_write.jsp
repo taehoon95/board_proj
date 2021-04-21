@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/board_proj/css/qna_board_write.css">
 </head>
 <body>
-	
+		${article }
 		<h2>게시판 글등록</h2>
 		<form action="boardWritePro.do" method="post"
 			enctype="multipart/form-data" name="boardform">

@@ -11,10 +11,10 @@ import board_proj.dto.BoardDTO;
 import board_proj.service.BoardDetailService;
 
 public class BoardReplyFormAction implements Action {
-
+ 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, SQLException {
+			{
 		int board_num = Integer.parseInt(request.getParameter("board_num"));
 		String page = request.getParameter("page");
 		

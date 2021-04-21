@@ -8,9 +8,9 @@ import board_proj.dto.BoardDTO;
 import board_proj.service.BoardDetailService;
 
 public class BoardDetailAction implements Action {
-
+ 
 	@Override
-	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward execute(HttpServletRequest request, HttpServletResponse response){
 		//   boardDetail.do?board_num=33&page=1
 		int board_num = Integer.parseInt(request.getParameter("board_num"));
 		int page = Integer.parseInt(request.getParameter("page"));

@@ -10,11 +10,11 @@ public class BoardDTO {
 	private String board_subject;
 	private String board_content;
 	private String board_file;
-	private int board_re_ref;
-	private int board_re_lev;
-	private int board_re_seq;
-	private int board_re_readcount;
-	private Date board_date;
+	private int board_re_ref; // 관련글 번호
+	private int board_re_lev; // 답글 레벨
+	private int board_re_seq; //관련글 중 출력 순서
+	private int board_re_readcount; // 조회수
+	private Date board_date; // 작성일
 
 	public BoardDTO(int board_num, String board_name, String board_pass, String board_subject, String board_content,
 			String board_file, int board_re_ref, int board_re_lev, int board_re_seq, int board_re_readcount,
