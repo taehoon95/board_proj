@@ -16,17 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import board_proj.action.Action;
-import board_proj.action.BoardDeleteFormAction;
-import board_proj.action.BoardDeleteProAction;
-import board_proj.action.BoardDetailAction;
-import board_proj.action.BoardListAction;
-import board_proj.action.BoardModifyFormAction;
-import board_proj.action.BoardModifyProAction;
-import board_proj.action.BoardReplyFormAction;
-import board_proj.action.BoardReplyProAction;
-import board_proj.action.BoardWriteFormAction;
-import board_proj.action.BoardWriteProAction;
-import board_proj.action.fileDownAction;
 import board_proj.dto.ActionForward;
 
 @WebServlet(urlPatterns={"*.do"},
