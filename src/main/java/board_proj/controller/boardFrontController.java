@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import board_proj.action.Action;
+import board_proj.action.NullAction;
 import board_proj.dto.ActionForward;
 
 @WebServlet(urlPatterns={"*.do"},
@@ -32,32 +33,32 @@ public class boardFrontController extends HttpServlet {
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-//		System.out.println("init() - config " + config.getInitParameter("configFile"));
 		String configFile = config.getInitParameter("configFile");
 		try(InputStream is = config.getServletContext().getResourceAsStream(configFile)){
 			Properties props = new Properties();
 			props.load(is);
 			
-//			System.out.println("props >>"+props);
 			for(Entry<Object, Object> entry : props.entrySet()) {
-//				System.out.println(entry.getKey()+" : " +entry.getValue());
-				Class<?> cls = Class.forName(entry.getValue()+"");
-				Action action = (Action) cls.newInstance();		
+				Class<?> cls;
+				Action action = null;
+
+				try {
+					cls = Class.forName(entry.getValue()+"");
+					action = (Action) cls.newInstance();		
+				}catch (ClassNotFoundException e) {
+					action = new NullAction();
+					e.printStackTrace();
+				}
 				actionMap.put(entry.getKey()+"", action);
 			}
-			
 //			for(Entry<String, Action> entry : actionMap.entrySet()) {
 //				System.out.println(entry.getKey()+" : " +entry.getValue());
 //			}
-		} catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		} catch (IOException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override
-	public void init() throws ServletException {
-	}
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doProcess(request, response);
@@ -83,6 +84,5 @@ public class boardFrontController extends HttpServlet {
 			}
 		}
 	}
-
 
 }
